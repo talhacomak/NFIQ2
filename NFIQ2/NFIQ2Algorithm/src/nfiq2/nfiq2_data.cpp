@@ -6,17 +6,17 @@
 NFIQ2::Data::Data() = default;
 
 NFIQ2::Data::Data(const uint8_t *pData, uint32_t dataSize)
-    : std::basic_string<uint8_t>(pData, dataSize)
+    : DataString(pData, dataSize)
 {
 }
 
 NFIQ2::Data::Data(const Data &otherData)
-    : std::basic_string<uint8_t>(otherData)
+    : DataString(otherData)
 {
 }
 
-NFIQ2::Data::Data(const std::basic_string<uint8_t> &otherData)
-    : std::basic_string<uint8_t>(otherData)
+NFIQ2::Data::Data(const DataString &otherData)
+    : DataString(otherData)
 {
 }
 
