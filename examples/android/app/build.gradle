@@ -1,0 +1,42 @@
+plugins { id 'com.android.application' }
+
+def repo = rootProject.projectDir.parentFile.parentFile
+def embedModel = providers.gradleProperty('nfiq2.embedModel')
+    .map { it.toBoolean() }.getOrElse(false)
+def generatedModelAssets = layout.buildDirectory.dir('generated/nfiq2-model-assets')
+def copyNfiq2Model = tasks.register('copyNfiq2Model', Sync) {
+    from new File(repo, 'NFIQ2/nist_plain_tir-ink.yaml')
+    into generatedModelAssets
+}
+
+android {
+    namespace 'org.nfiq2.demo'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'org.nfiq2.demo'
+        minSdk 28
+        targetSdk 36
+        versionCode 1
+        versionName '1.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildTypes {
+        release { minifyEnabled false }
+    }
+    if (!embedModel) {
+        sourceSets {
+            main.assets.srcDir files(generatedModelAssets).builtBy(copyNfiq2Model)
+        }
+    }
+}
+
+dependencies {
+    implementation project(':nfiq2-android')
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}
