@@ -66,16 +66,26 @@ foreach(flag_var
 			endif()
 endforeach(flag_var)
 
-# forwarding android build flags
-if( NOT "${ANDROID_ABI}" STREQUAL "")
-  message( STATUS "${Gn}-- Forwarding Android build flags to the external projects${Na}" )
-  set(ANDROID_CMAKE_ARGS
-    -DANDROID_ABI=${ANDROID_ABI}
-    -DANDROID_PLATFORM=${ANDROID_PLATFORM}
-    -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-    -DCMAKE_ANDROID_NDK=${CMAKE_ANDROID_NDK}
-    -DANDROID_TARGET=${ANDROID_TARGET}
-  )
+# Forward Android build flags to the external projects.
+if(ANDROID)
+	foreach(required_variable ANDROID_ABI ANDROID_PLATFORM
+	    CMAKE_TOOLCHAIN_FILE CMAKE_ANDROID_NDK)
+		if(NOT DEFINED ${required_variable} OR
+		    "${${required_variable}}" STREQUAL "")
+			message(FATAL_ERROR
+			    "Android build requires ${required_variable}")
+		endif()
+	endforeach()
+
+	message(STATUS
+	    "${Gn}-- Forwarding Android build flags to the external projects${Na}")
+	set(ANDROID_CMAKE_ARGS
+		-DANDROID_ABI=${ANDROID_ABI}
+		-DANDROID_PLATFORM=${ANDROID_PLATFORM}
+		-DANDROID_STL=${ANDROID_STL}
+		-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+		-DCMAKE_ANDROID_NDK=${CMAKE_ANDROID_NDK}
+	)
 endif()
 
 # forwarding iOS build flags
