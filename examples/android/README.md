@@ -16,7 +16,7 @@ Open `examples/android` in Android Studio or run the Gradle wrapper from this
 directory. Required tools:
 
 - JDK 17 or 21, Android SDK platform 36, and Build Tools 35.0.0.
-- Android NDK 29.0.14206865 and SDK CMake 3.22.1.
+- Android NDK 29.0.14206865 and SDK CMake 3.31.6.
 - The repository's pinned submodules, initialized with
   `git submodule update --init --recursive`.
 

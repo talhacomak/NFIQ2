@@ -30,7 +30,7 @@ android {
         }
     }
     externalNativeBuild {
-        cmake { path file('src/main/cpp/CMakeLists.txt'); version '3.22.1' }
+        cmake { path file('src/main/cpp/CMakeLists.txt'); version '3.31.6' }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -38,7 +38,7 @@ android {
     }
 }
 
-def cmakeExe = new File(android.sdkDirectory, 'cmake/3.22.1/bin/cmake' +
+def cmakeExe = new File(android.sdkDirectory, 'cmake/3.31.6/bin/cmake' +
     (System.getProperty('os.name').toLowerCase().contains('windows') ? '.exe' : ''))
 def ndkDir = local.getProperty('nfiq2.ndkPath') ? file(local.getProperty('nfiq2.ndkPath')) :
     new File(android.sdkDirectory, 'ndk/29.0.14206865')

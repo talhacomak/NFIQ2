@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.28)
 project(nfiq2_jni LANGUAGES CXX)
 
 option(NFIQ2_EMBED_MODEL "NFIQ2 was built with embedded model parameters" OFF)
