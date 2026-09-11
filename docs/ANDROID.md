@@ -20,6 +20,9 @@ The Android toolchain must set `ANDROID_ABI`, `ANDROID_PLATFORM`,
 `CMAKE_TOOLCHAIN_FILE`, and `CMAKE_ANDROID_NDK`. Configuration stops early with
 a clear error if any required value is missing. The selected ABI, API level,
 C++ runtime, toolchain, and NDK are forwarded to every external project.
+Android's installed OpenCV package directory is also passed to the NFIQ2
+library projects so that it remains discoverable when they use standard CMake
+package lookup.
 
 The command above keeps the random forest parameters outside the library. An
 Android application can package `NFIQ2/nist_plain_tir-ink.yaml` as an asset and
