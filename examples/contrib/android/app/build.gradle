@@ -1,6 +1,6 @@
 plugins { id 'com.android.application' }
 
-def repo = rootProject.projectDir.parentFile.parentFile
+def repo = rootProject.projectDir.parentFile.parentFile.parentFile
 def embedModel = providers.gradleProperty('nfiq2.embedModel')
     .map { it.toBoolean() }.getOrElse(false)
 def generatedModelAssets = layout.buildDirectory.dir('generated/nfiq2-model-assets')

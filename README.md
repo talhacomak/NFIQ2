@@ -96,7 +96,7 @@ cmake --build .
 
 For Android library builds with the NDK, see [Android build instructions](docs/ANDROID.md).
 For a gallery-to-score Android application with Java/JNI integration, see
-[the Android example](examples/android/README.md).
+[the contributed Android example](examples/contrib/android/README.md).
 
 Quick Build: Library + Command-line Interface
 ---------------------------------------------

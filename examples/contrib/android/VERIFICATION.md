@@ -10,17 +10,18 @@ Android 9/API 28 or later.
 The final verification command was run from the repository root:
 
 ```powershell
-.\examples\android\gradlew.bat -p examples\android --no-daemon `
+.\examples\contrib\android\gradlew.bat -p examples\contrib\android --no-daemon `
   :nfiq2-android:assembleDebug :app:assembleDebug `
   :app:testDebugUnitTest :app:assembleDebugAndroidTest :app:lintDebug
 ```
 
 The build completed successfully. It produced:
 
-- `examples/android/app/build/outputs/apk/debug/app-debug.apk` (9,981,242 bytes).
+- `examples/contrib/android/app/build/outputs/apk/debug/app-debug.apk`
+  (9,981,242 bytes).
 - `NFIQ2/NFIQ2Android/build/outputs/aar/nfiq2-android-debug.aar`
   (2,224,070 bytes).
-- `examples/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`
+- `examples/contrib/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`
   (4,629,173 bytes).
 - `build-android-example/arm64-v8a-external/install_staging/nfiq2/lib/libnfiq2.a`
   (10,830,534 bytes and 24 object files).
@@ -47,7 +48,7 @@ one backup/data-extraction recommendation, and one plural-resource suggestion.
 The optional embedded configuration was also built successfully:
 
 ```powershell
-.\examples\android\gradlew.bat -p examples\android --no-daemon `
+.\examples\contrib\android\gradlew.bat -p examples\contrib\android --no-daemon `
   '-Pnfiq2.embedModel=true' `
   :nfiq2-android:assembleDebug :app:assembleDebug
 ```

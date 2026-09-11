@@ -2,8 +2,8 @@
 
 This English-language example uses the system image picker and computes an
 NFIQ 2 quality score through the reusable `NFIQ2Android` JNI library. The Java
-application is under `examples/android/app`; the Android library module is under
-`NFIQ2/NFIQ2Android`.
+application is under `examples/contrib/android/app`; the Android library module
+is under `NFIQ2/NFIQ2Android`.
 
 The app remembers the user's 500 PPI source setting across image selections and
 restarts. It does not infer PPI from image dimensions or metadata. Images stay
@@ -12,8 +12,8 @@ permissions.
 
 ## Build
 
-Open `examples/android` in Android Studio or run the Gradle wrapper from this
-directory. Required tools:
+Open `examples/contrib/android` in Android Studio or run the Gradle wrapper from
+this directory. Required tools:
 
 - JDK 17 or 21, Android SDK platform 36, and Build Tools 35.0.0.
 - Android NDK 29.0.14206865 and SDK CMake 3.31.6.

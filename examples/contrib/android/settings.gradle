@@ -7,4 +7,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = 'FingerprintQuality'
 include ':app', ':nfiq2-android'
-project(':nfiq2-android').projectDir = file('../../NFIQ2/NFIQ2Android')
+project(':nfiq2-android').projectDir = file('../../../NFIQ2/NFIQ2Android')
