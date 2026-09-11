@@ -22,6 +22,11 @@ public class Nfiq2Test {
 
     @BeforeClass public static void initializeNfiq2() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        try {
+            Nfiq2.initialize(context.getAssets(), MODEL_ASSET,
+                "00000000000000000000000000000000");
+            fail("Expected model hash validation");
+        } catch (IllegalStateException expected) { }
         Nfiq2.initialize(context.getAssets(), MODEL_ASSET, MODEL_HASH);
     }
 

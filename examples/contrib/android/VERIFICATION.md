@@ -27,8 +27,10 @@ The build completed successfully. It produced:
   (10,830,534 bytes and 24 object files).
 
 The APK contains exactly one `nist_plain_tir-ink.yaml` asset and one
-`lib/arm64-v8a/libnfiq2_jni.so`. The AAR contains the same JNI library and the
-`gov.nist.nfiq2.Nfiq2` Java class.
+`lib/arm64-v8a/libnfiq2_jni.so`. The model asset is normalized to LF line
+endings during the build and has the expected MD5 hash
+`b4a1e7586b3be906f9770e4b77768038`. The AAR contains the same JNI library and
+the `gov.nist.nfiq2.Nfiq2` Java class.
 
 `libnfiq2_jni.so` is an ELF64 AArch64 shared object. It exports
 `Java_gov_nist_nfiq2_Nfiq2_initialize` and
@@ -77,12 +79,21 @@ kept the required-variable validation, ABI, platform, STL, toolchain, NDK, and
 the `ad-hoc-group` `ANDROID_TARGET` forwarding. No compatibility-only commit was
 left in the PR branches.
 
-## Device limitation
+## Physical device verification
 
-`adb devices -l` reported no attached device. The ARM64 instrumentation test APK
-was compiled and packaged but not executed. The test initializes the external
-model from application assets, expects score 54 for the repository's
-`SFinGe_Test01.pgm` fixture on two consecutive calls, checks invalid buffer and
-PPI handling, and verifies that the 500 PPI source setting survives Activity
-recreation. Those assertions still require an ARM64 device or emulator for
-runtime confirmation.
+The instrumentation suite was run on a Huawei ADY-LX9 with Android 12/API 31
+and an arm64-v8a CPU. The first run reproduced a SIGSEGV while loading the
+external model: the Windows working tree used CRLF line endings, so the asset's
+MD5 differed from the repository metadata, and the mismatch path dereferenced
+an empty OpenCV model pointer.
+
+The build now normalizes the generated asset to LF and fails if its hash is not
+the expected value. The native mismatch path checks the model pointer before
+clearing it, allowing JNI to return an `IllegalStateException` instead of
+terminating the process. The device test deliberately supplies a wrong hash
+before normal initialization to cover this path.
+
+All four device tests passed after the fix. They initialize the external model,
+expect score 54 for the repository's `SFinGe_Test01.pgm` fixture on two
+consecutive calls, check invalid model hash, buffer and PPI handling, and verify
+that the 500 PPI source setting survives Activity recreation.
