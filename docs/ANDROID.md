@@ -40,7 +40,8 @@ Outputs are in `build-android-arm64/install_staging/nfiq2`:
 - `include/`: NFIQ2 public headers.
 - `lib/libFRFXLL_static.a`: FingerJetFX static dependency.
 - `sdk/native/`: OpenCV headers, static libraries and third-party dependencies.
-- `lib/libNfiq2Api.so`: existing legacy C wrapper, which the project marks for
+- The build currently also emits the legacy C wrapper. Its static/shared form
+  is not part of the Android CI contract because the project marks that API for
   removal. It is not a JNI wrapper or an AAR.
 
 Link all required static dependencies when using `libnfiq2.a`; the archive does

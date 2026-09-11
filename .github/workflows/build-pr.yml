@@ -217,10 +217,11 @@ jobs:
       run: |
         install_dir="install_staging/nfiq2"
         test -s "${install_dir}/lib/libnfiq2.a"
-        test -s "${install_dir}/lib/libNfiq2Api.so"
         test -s "${install_dir}/include/nfiq2.hpp"
+        "${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar" \
+            t "${install_dir}/lib/libnfiq2.a" | grep -q '\.o$'
         "${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" \
-            -h "${install_dir}/lib/libNfiq2Api.so" | grep -q 'Machine:.*AArch64'
+            -h "${install_dir}/lib/libnfiq2.a" | grep -q 'Machine:.*AArch64'
 
     - name: Show Dependencies (macOS)
       if: ${{ runner.os == 'macOS' }}
