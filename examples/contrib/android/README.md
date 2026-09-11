@@ -37,7 +37,9 @@ Build the default external-model configuration:
 The build compiles NFIQ2 and its pinned dependencies for arm64-v8a/API 21 with
 `EMBED_RANDOM_FOREST_PARAMETERS=OFF`. It packages the repository's
 `nist_plain_tir-ink.yaml` into the application assets without duplicating the
-22 MB model in source control. Native output is stored in
+22 MB model in source control. The build normalizes the asset to LF line endings
+and verifies its expected MD5 hash, so the packaged bytes are identical on
+Windows, Linux, and macOS. Native output is stored in
 `build-android-example/arm64-v8a-external`.
 
 The embedded configuration remains available:
@@ -103,5 +105,5 @@ validation, and verifies that the 500 PPI source setting survives Activity
 recreation.
 
 The example has also been configured and built after applying the
-`ad-hoc-group` CMake changes. See `VERIFICATION.md` for the tested commands and
-remaining device limitation.
+`ad-hoc-group` CMake changes and tested on a physical ARM64 device. See
+`VERIFICATION.md` for the complete results.
