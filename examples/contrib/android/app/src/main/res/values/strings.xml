@@ -20,7 +20,7 @@
     <string name="loaded_needs_ppi">Image ready. Confirm the 500 PPI source setting to continue.</string>
     <string name="analyzing">Calculating quality… The first analysis may take longer while the model loads.</string>
     <string name="complete">Analysis complete · %1$.2f seconds</string>
-    <string name="dimensions">%1$d × %2$d pixels · Original dimensions preserved</string>
+    <string name="dimensions">Dimensions: %1$d × %2$d px · Original size preserved</string>
     <string name="image_error">Could not open this image. Try a supported PNG or JPEG file.</string>
     <string name="size_error">The image must be 32–4096 pixels wide and high, with no more than 4 million pixels. Choose the original scan.</string>
     <string name="analysis_error">Analysis failed. Try a light-background scan containing a single fingerprint.\n%1$s</string>

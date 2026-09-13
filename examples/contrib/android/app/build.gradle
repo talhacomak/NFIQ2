@@ -1,5 +1,8 @@
 plugins { id 'com.android.application' }
 
+def local = new Properties()
+def localFile = rootProject.file('local.properties')
+if (localFile.exists()) localFile.withInputStream { local.load(it) }
 def repo = rootProject.projectDir.parentFile.parentFile.parentFile
 def embedModel = providers.gradleProperty('nfiq2.embedModel')
     .map { it.toBoolean() }.getOrElse(false)
@@ -10,6 +13,7 @@ def modelHash = 'b4a1e7586b3be906f9770e4b77768038'
 def copyNfiq2Model = tasks.register('copyNfiq2Model') {
     inputs.file modelSource
     inputs.property 'lineEndings', 'LF'
+    inputs.property 'modelHash', modelHash
     outputs.file modelOutput
     doLast {
         def output = modelOutput.get().asFile
@@ -26,22 +30,32 @@ def copyNfiq2Model = tasks.register('copyNfiq2Model') {
 }
 
 android {
-    namespace 'org.nfiq2.demo'
-    compileSdk 36
-    defaultConfig {
-        applicationId 'org.nfiq2.demo'
-        minSdk 28
-        targetSdk 36
-        versionCode 1
-        versionName '1.0'
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    namespace = 'org.nfiq2.demo'
+    compileSdk = 36
+    ndkVersion = '29.0.14206865'
+    if (local.getProperty('nfiq2.ndkPath')) {
+        ndkPath = local.getProperty('nfiq2.ndkPath')
     }
+    defaultConfig {
+        applicationId = 'org.nfiq2.demo'
+        minSdk = 28
+        targetSdk = 36
+        versionCode = 1
+        versionName = '1.0'
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
+        buildConfigField 'boolean', 'NFIQ2_EMBED_MODEL', embedModel.toString()
+    }
+    buildFeatures { buildConfig = true }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildTypes {
-        release { minifyEnabled false }
+        release { minifyEnabled = false }
+    }
+    lint {
+        warningsAsErrors = true
+        disable += 'AndroidGradlePluginVersion'
     }
     if (!embedModel) {
         sourceSets {

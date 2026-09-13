@@ -11,14 +11,14 @@ def nativeBuild = new File(repo, "build-android-example/arm64-v8a-${modelMode}")
 def nativePrefix = new File(nativeBuild, 'install_staging/nfiq2')
 
 android {
-    namespace 'gov.nist.nfiq2'
-    compileSdk 36
-    ndkVersion '29.0.14206865'
+    namespace = 'gov.nist.nfiq2'
+    compileSdk = 36
+    ndkVersion = '29.0.14206865'
     if (local.getProperty('nfiq2.ndkPath')) {
-        ndkPath local.getProperty('nfiq2.ndkPath')
+        ndkPath = local.getProperty('nfiq2.ndkPath')
     }
     defaultConfig {
-        minSdk 21
+        minSdk = 21
         ndk { abiFilters 'arm64-v8a' }
         externalNativeBuild {
             cmake {
@@ -30,11 +30,18 @@ android {
         }
     }
     externalNativeBuild {
-        cmake { path file('src/main/cpp/CMakeLists.txt'); version '3.31.6' }
+        cmake {
+            path = file('src/main/cpp/CMakeLists.txt')
+            version = '3.31.6'
+        }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    lint {
+        warningsAsErrors = true
+        disable += 'ChromeOsAbiSupport'
     }
 }
 

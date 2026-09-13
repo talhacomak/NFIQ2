@@ -1,6 +1,6 @@
 # Android fingerprint quality example
 
-This English-language example uses the system image picker and computes an
+This example uses the system image picker and computes an
 NFIQ 2 quality score through the reusable `NFIQ2Android` JNI library. The Java
 application is under `examples/contrib/android/app`; the Android library module
 is under `NFIQ2/NFIQ2Android`.
@@ -45,7 +45,7 @@ Windows, Linux, and macOS. Native output is stored in
 The embedded configuration remains available:
 
 ```powershell
-.\gradlew.bat -Pnfiq2.embedModel=true :app:assembleDebug
+.\gradlew.bat '-Pnfiq2.embedModel=true' :app:assembleDebug
 ```
 
 Its native output is stored separately under
@@ -62,12 +62,25 @@ module builds `libnfiq2_jni.so`, packages it in an AAR, and exposes
 `gov.nist.nfiq2.Nfiq2`:
 
 ```java
-Nfiq2.initialize(
-    context.getAssets(),
-    "nist_plain_tir-ink.yaml",
-    "b4a1e7586b3be906f9770e4b77768038");
-int score = Nfiq2.score(grayscale, width, height, 500);
+import android.content.Context;
+import gov.nist.nfiq2.Nfiq2;
+
+public final class FingerprintQuality {
+    private FingerprintQuality() { }
+
+    public static int score(Context context, byte[] grayscale,
+            int width, int height) {
+        Nfiq2.initialize(
+            context.getAssets(),
+            "nist_plain_tir-ink.yaml",
+            "b4a1e7586b3be906f9770e4b77768038");
+        return Nfiq2.score(grayscale, width, height, 500);
+    }
+}
 ```
+
+Save this class as `FingerprintQuality.java` in the consuming Android module.
+Call `score` on a worker thread with one grayscale byte per pixel.
 
 For an external-model build, `initialize` loads and verifies the named Android
 asset through `AAssetManager`. For an embedded build, the same call initializes
@@ -96,14 +109,14 @@ The Java API can also be called directly from Kotlin.
 .\gradlew.bat :app:assembleDebugAndroidTest
 # Requires an attached ARM64 device:
 .\gradlew.bat :app:connectedDebugAndroidTest
+# Run the same checks with the embedded model:
+.\gradlew.bat '-Pnfiq2.embedModel=true' :app:connectedDebugAndroidTest
 ```
 
-JVM tests cover grayscale conversion. The device test initializes the external
-model from application assets, scores the repository's synthetic
+JVM tests cover grayscale conversion. The instrumentation test initializes the
+selected model configuration, scores the repository's synthetic
 `SFinGe_Test01.pgm` fixture twice with expected score 54, checks native input
 validation, and verifies that the 500 PPI source setting survives Activity
 recreation.
-
-The example has also been configured and built after applying the
-`ad-hoc-group` CMake changes and tested on a physical ARM64 device. See
-`VERIFICATION.md` for the complete results.
+External-model runs also check that an invalid model hash reports an exception
+and that initialization can then succeed with the correct hash.

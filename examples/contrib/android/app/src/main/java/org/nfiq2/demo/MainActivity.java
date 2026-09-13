@@ -41,6 +41,7 @@ public final class MainActivity extends Activity {
     private Uri selected;
     private SharedPreferences preferences;
 
+    @SuppressWarnings("deprecation")
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
@@ -77,6 +78,7 @@ public final class MainActivity extends Activity {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void pickImage() {
         Intent intent;
         if (Build.VERSION.SDK_INT >= 33) {
@@ -98,6 +100,7 @@ public final class MainActivity extends Activity {
             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
     }
 
+    @SuppressWarnings("deprecation")
     @Override protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         if (request != PICK_IMAGE || result != RESULT_OK || data == null || data.getData() == null) return;
