@@ -128,6 +128,8 @@ jobs:
           --triplet=${{ matrix.config.arch }}-windows getopt
 
     - name: Build Directory Cache
+      # The runner's latest NDK can change between runs.
+      if: ${{ matrix.config.platform != 'android' }}
       id: builddir-cache
       uses: actions/cache@v6
       with:
@@ -219,9 +221,11 @@ jobs:
         test -s "${install_dir}/lib/libnfiq2.a"
         test -s "${install_dir}/include/nfiq2.hpp"
         "${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar" \
-            t "${install_dir}/lib/libnfiq2.a" | grep -q '\.o$'
+            t "${install_dir}/lib/libnfiq2.a" | \
+            awk '/\.o$/ { found = 1 } END { exit !found }'
         "${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" \
-            -h "${install_dir}/lib/libnfiq2.a" | grep -q 'Machine:.*AArch64'
+            -h "${install_dir}/lib/libnfiq2.a" | \
+            awk '/Machine:/ { found = 1; if ($0 !~ /AArch64/) bad = 1 } END { exit (!found || bad) }'
 
     - name: Show Dependencies (macOS)
       if: ${{ runner.os == 'macOS' }}
