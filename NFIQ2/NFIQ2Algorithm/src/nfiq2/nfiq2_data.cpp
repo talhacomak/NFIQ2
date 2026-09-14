@@ -6,7 +6,6 @@
 NFIQ2::Data::Data() = default;
 
 NFIQ2::Data::Data(const std::uint8_t *pData, std::uint32_t dataSize)
-    : buffer(dataSize)
 {
 	if ((pData == nullptr) || (dataSize == 0))
 		return;
@@ -35,6 +34,12 @@ NFIQ2::Data::resize(std::vector<std::uint8_t>::size_type count)
 
 std::vector<std::uint8_t>::reference
 NFIQ2::Data::at(std::vector<std::uint8_t>::size_type pos)
+{
+	return (this->buffer.at(pos));
+}
+
+std::vector<std::uint8_t>::const_reference
+NFIQ2::Data::at(std::vector<std::uint8_t>::size_type pos) const
 {
 	return (this->buffer.at(pos));
 }
