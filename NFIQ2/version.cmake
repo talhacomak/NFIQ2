@@ -1,7 +1,7 @@
 # Version information
 set(NFIQ2_VERSION_MAJOR "2")
 set(NFIQ2_VERSION_MINOR "3")
-set(NFIQ2_VERSION_PATCH "0")
+set(NFIQ2_VERSION_PATCH "1")
 set(NFIQ2_VERSION_STATUS "")
 
 ################################################################################
@@ -55,13 +55,13 @@ endif()
 
 ################################################################################
 
-if("${TARGET_PLATFORM}" MATCHES "linux*")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set( VERSION_VISIBILITY_ATTRIBUTE "__attribute__( ( section( \".nfiq2_version_info\" ) ) ) __attribute__( ( visibility( \"default\" ) ) )")
 else()
   set( VERSION_VISIBILITY_ATTRIBUTE "")
 endif()
 
-set(VERSION_SUFFIX "${CMAKE_CXX_COMPILER_ID}.${TARGET_PLATFORM}")
+set(VERSION_SUFFIX "${CMAKE_CXX_COMPILER_ID}.${CMAKE_SYSTEM_NAME}")
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/version.cpp.in")
   configure_file(version.cpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.${VERSION_SUFFIX}.cpp)

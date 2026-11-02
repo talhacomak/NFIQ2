@@ -136,12 +136,11 @@ cmake --build .
       operating system.
     * On Windows with Visual Studio, this is done with
       [vcpkg](https://github.com/microsoft/vcpkg), which will require passing
-      the vcpkg `CMAKE_TOOLCHAIN_FILE` and `VCPKG_TARGET_TRIPLET` options
-      to CMake.
+      at least the vcpkg `CMAKE_TOOLCHAIN_FILE` to CMake.
       * For example, a 64-bit Release-only build with the default Visual
         Studio generator might look like:
         ```
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_CONFIGURATION_TYPES=Release -A x64
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DCMAKE_CONFIGURATION_TYPES=Release -A x64
         cmake --build . --config Release
         ```
     * If building a macOS universal binary, be sure all dependencies are
@@ -157,19 +156,16 @@ writing. **Using a different version of OpenCV may result in unstable NFIQ 2
 scores and is not supported.** Future updates to OpenCV versions should run the
 conformance test and larger sequestered tests without differences.
 
-Known Limitations
------------------
-
- * **macOS**:
-   * Xcode 10 and later does not support 32-bit applications. In order to build
-     NFIQ 2 for 32-bit macOS, use Xcode 9.4.x.
-
 Build Options
 -------------
 The CMake builds supports the following options:
 
  * `BUILD_NFIQ2_CLI` (default: `ON`)
    * Whether or not to build the standalone command-line executable.
+ * `BUILD_SHARED_LIBS` (default: `OFF`)
+   * Build libnfiq2 as a shared (or static) library.
+ * `BUILD_WITH_STATIC_CRT` (default: `ON`)
+   * On Windows, link against the static C runtime.
  * `EMBED_RANDOM_FOREST_PARAMETERS` (default: `OFF`)
    * Whether or not to embed random forest parameters into the library.
  * `EMBEDDED_RANDOM_FOREST_PARAMETER_FCT` (default: `0`)
